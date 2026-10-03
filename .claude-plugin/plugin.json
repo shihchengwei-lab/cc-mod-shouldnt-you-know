@@ -1,0 +1,6 @@
+{
+  "name": "shouldnt-you-know",
+  "version": "0.1.0",
+  "description": "After Claude edits code, a side look at the task and the change shows one plain-language structural note above the prompt; it never enters Claude's context.",
+  "types": "./types/index.d.ts"
+}
