@@ -1,0 +1,12 @@
+{
+  "name": "shihchengwei-lab",
+  "description": "Claude Code mods by SC Wei",
+  "owner": { "name": "SC Wei" },
+  "plugins": [
+    {
+      "name": "shouldnt-you-know",
+      "source": "./",
+      "description": "After Claude edits code, a side look at the task and the change shows one plain-language structural note above the prompt; it never enters Claude's context."
+    }
+  ]
+}
