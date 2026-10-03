@@ -6,7 +6,7 @@ English | [繁體中文](README.zh-TW.md)
 
 shouldnt-you-know is a Claude Code mod. When a main-conversation turn ends and that turn edited non-test files, it forks one question off the current conversation and asks a side reviewer to find structure that stays correct only through workarounds: two copies of the same data kept in sync, or a requirement held up by a special-case branch. If the reviewer has a concrete direction, a plain-language note appears above the prompt. If not, nothing appears.
 
-The note is for you only. It is not written to the conversation, and Claude cannot read it on the next turn. If it makes sense to you, press **Put in prompt** to place it in the prompt box; you decide whether to send it, and you can add "what does this mean?" to have Claude explain it.
+The note is for you only. It is not written to the conversation, and according to the Claude Code mod documentation, Claude cannot read it on the next turn. If it makes sense to you, press **Put in prompt** to place it in the prompt box; you decide whether to send it, and you can add "what does this mean?" to have Claude explain it.
 
 ## How it works
 
