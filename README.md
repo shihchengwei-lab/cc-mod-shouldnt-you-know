@@ -23,14 +23,11 @@ flowchart LR
 
 The reviewer judges in two steps. First, it starts from the results that should hold once the task is fully delivered and works backward to the conditions that are easy to miss. Then it traces the actual usage flow to find where the current data structure conflates or loses distinctions, forcing sync, ordering, or special cases. It compares alternatives with five criteria: invalid states cannot be built, causes flow one way, local behavior is predictable, each fact has one authoritative source, and necessary complexity stays at real boundaries.
 
-A note looks like this. **This shows the format; it is not real output:**
+A note is plain prose with no fields or labels. It says four things: what the reviewer sees, why it would change it, what must not change, and what it would change it into. When the reviewer has no concrete direction it answers `none` and nothing appears; any other reply is shown whole, unchecked. **This shows the format; it is not real output:**
 
 ```text
-Shouldn't you know? Deletes never reach the server, so an offline delete comes back on the next sync.
-
-Deletes skip the sync queue
-The task needs offline changes to match after reconnecting. sync() sends only adds and edits; a delete only changes the local list.
-Consider recording a delete as an operation too, so sync reads one operation log.
+Shouldn't you know?
+sync() sends only adds and edits, and a delete only changes the local list, so an item deleted offline comes back on the next sync. The task needs offline changes to match after reconnecting, and that result must not change. Deletes could be recorded as operations too, so sync reads one operation log.
 ```
 
 Notes already shown in the same session go into the next question, so the reviewer continues, revises, or drops an earlier concern instead of repeating it. Notes are written in the language you are using in the conversation.

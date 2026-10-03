@@ -12,8 +12,8 @@ const USAGE = {
 }
 
 const NOTE_A =
-  'learn: Deletes are never synced.\nexplain:\n**Deletes get lost**\nThe task needs deletes.\nsync() only copies.'
-const NOTE_B = 'learn: Two copies of the count.\nexplain:\n**Count has two owners**\nBody B'
+  'sync() sends adds and edits, but a delete only changes the local list.\nThe task needs offline changes to match after reconnecting.'
+const NOTE_B = 'The count is stored twice and the two copies drift.'
 
 type Setup = {
   prompts: string[]
@@ -90,14 +90,14 @@ test('an edit then a main turn shows the note in the band', async ($, on) => {
   for (const surface of SURFACES) {
     const ui = await band($, surface)
 
-    expect(await ui.find({ type: 'Text', text: /Deletes are never synced/ })).toBeDefined()
-    expect(await ui.find({ type: 'Text', text: 'Deletes get lost' })).toBeDefined()
+    expect(await ui.find({ type: 'Text', text: /Shouldn't you know\?/ })).toBeDefined()
+    expect(await ui.find({ type: 'Text', text: NOTE_A })).toBeDefined()
     await ui.unmount()
   }
 })
 
-test('learn: none draws nothing of ours', async ($, on) => {
-  const s = setup(on, [answered('learn: none')])
+test('none draws nothing of ours', async ($, on) => {
+  const s = setup(on, [answered('none')])
 
   await edit($, 'src/a.ts')
   await finish($)
@@ -166,7 +166,9 @@ test('the second fork prompt lists the first note', async ($, on) => {
 
   expect(s.prompts.length).toBe(2)
   expect(s.prompts[0]).toContain('(none)')
-  expect(s.prompts[1]).toContain('- Deletes are never synced. — Deletes get lost')
+  expect(s.prompts[1]).toContain(
+    '- sync() sends adds and edits, but a delete only changes the local list. The task needs offline changes to match after reconnecting.',
+  )
 })
 
 test('Put in prompt fills the box and clears the band', async ($, on) => {
@@ -181,7 +183,7 @@ test('Put in prompt fills the box and clears the band', async ($, on) => {
 
   expect(s.fills).toEqual([
     {
-      text: "Shouldn't you know?\nDeletes are never synced.\n\nDeletes get lost\nThe task needs deletes.\nsync() only copies.",
+      text: `Shouldn't you know?\n${NOTE_A}`,
       mode: 'append',
     },
   ])

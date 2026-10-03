@@ -1,7 +1,5 @@
 export type Note = {
-  learn: string
-  title: string
-  body: string
+  text: string
 }
 
 declare module 'claude-code' {

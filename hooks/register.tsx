@@ -12,13 +12,9 @@ const EDIT_TOOLS = new Set(['Edit', 'Write', 'MultiEdit', 'NotebookEdit'])
 
 const changed = new Set<string>()
 
-const format = (note: Note): string =>
-  [
-    `Shouldn't you know?\n${note.learn}`,
-    [note.title, note.body].filter(part => part !== '').join('\n'),
-  ]
-    .filter(part => part !== '')
-    .join('\n\n')
+const LABEL = "Shouldn't you know?"
+
+const format = (note: Note): string => `${LABEL}\n${note.text}`
 
 const review = async ($: EngineInterface) => {
   const previous = await read($, shown)
@@ -90,10 +86,9 @@ export const register: Register = on => {
     return (
       <Box flexDirection="column">
         <Text bold color="yellow">
-          Shouldn't you know? {note.learn}
+          {LABEL}
         </Text>
-        {note.title !== '' && <Text bold>{note.title}</Text>}
-        {note.body !== '' && <Text wrap="wrap">{note.body}</Text>}
+        <Text wrap="wrap">{note.text}</Text>
         <Box>
           <Button
             key="fill"

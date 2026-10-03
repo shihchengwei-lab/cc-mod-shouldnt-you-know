@@ -2,38 +2,30 @@ import { test, expect } from 'claude-code/testing'
 
 import { isTestPath, parseNote } from '../hooks/parse'
 
-test('parseNote reads learn, title and body', async () => {
-  const note = parseNote(
-    'learn: Deletes are not synced.\nexplain:\n**Deletes get lost**\nThe task needs X.\nThe code does Y.\n',
-  )
+test('parseNote keeps the whole reply as the note', async () => {
+  const reply = 'sync() only sends adds.\n\nKeep the delete result.\nRecord deletes as operations.'
 
-  expect(note).toEqual({
-    learn: 'Deletes are not synced.',
-    title: 'Deletes get lost',
-    body: 'The task needs X.\nThe code does Y.',
-  })
+  expect(parseNote(`\n${reply}\n`)).toEqual({ text: reply })
 })
 
-test('parseNote returns null for none, empty or missing learn', async () => {
-  expect(parseNote('learn: none')).toBe(null)
-  expect(parseNote('Learn: None.')).toBe(null)
-  expect(parseNote('learn:   ')).toBe(null)
-  expect(parseNote('no label here')).toBe(null)
+test('parseNote returns null for none or an empty reply', async () => {
+  expect(parseNote('none')).toBe(null)
+  expect(parseNote('None.')).toBe(null)
+  expect(parseNote('  none \n')).toBe(null)
   expect(parseNote('')).toBe(null)
   // A parser that always answers null passes the lines above; this one it does not.
-  expect(parseNote('learn: None of the deletes are synced.')?.learn).toBe(
+  expect(parseNote('None of the deletes are synced.')?.text).toBe(
     'None of the deletes are synced.',
   )
 })
 
-test('parseNote strips a code fence and markdown decoration', async () => {
-  const note = parseNote('```\n**learn:** Keep one source.\nexplain:\n**One source**\nBody\n```')
-
-  expect(note).toEqual({ learn: 'Keep one source.', title: 'One source', body: 'Body' })
+test('parseNote strips a surrounding code fence', async () => {
+  expect(parseNote('```\nKeep one source.\n```')).toEqual({ text: 'Keep one source.' })
+  expect(parseNote('```\nnone\n```')).toBe(null)
 })
 
-test('parseNote without an explain section gives empty title and body', async () => {
-  expect(parseNote('learn: Only a line.')).toEqual({ learn: 'Only a line.', title: '', body: '' })
+test('parseNote does not require any part of the note', async () => {
+  expect(parseNote('Only one sentence.')).toEqual({ text: 'Only one sentence.' })
 })
 
 test('isTestPath follows the test conventions', async () => {
