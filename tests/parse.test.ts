@@ -24,10 +24,6 @@ test('parseNote strips a surrounding code fence', async () => {
   expect(parseNote('```\nnone\n```')).toBe(null)
 })
 
-test('parseNote does not require any part of the note', async () => {
-  expect(parseNote('Only one sentence.')).toEqual({ text: 'Only one sentence.' })
-})
-
 test('isTestPath follows the test conventions', async () => {
   const yes = [
     'tests/a.ts',

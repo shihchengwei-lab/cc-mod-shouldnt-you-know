@@ -96,6 +96,7 @@ test('an edit then a main turn shows the note in the band', async ($, on) => {
   }
 })
 
+// The only test that fails if review() shows the raw reply instead of parsing it.
 test('none draws nothing of ours', async ($, on) => {
   const s = setup(on, [answered('none')])
 
